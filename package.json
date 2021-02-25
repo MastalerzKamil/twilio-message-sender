@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "twilio-run",
     "deploy": "twilio-run deploy"
   },
@@ -11,9 +11,14 @@
     "twilio": "^3.56"
   },
   "devDependencies": {
+    "jest": "^26.6.3",
     "twilio-run": "^2.6.0"
   },
   "engines": {
-    "node": "10"
-  }
+    "node": "14.16.0"
+  },
+  "main": "index.js",
+  "repository": "git@github.com:kamil-mastalerz-netguru/twilio-message-sender.git",
+  "author": "Kamil Mastalerz <kamil.mastalerz@netguru.com>",
+  "license": "MIT"
 }

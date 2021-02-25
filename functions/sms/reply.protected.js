@@ -3,7 +3,7 @@ const request = require('request-promise-native')
 exports.handler = function(context, event, callback) {
   const { ACCOUNT_SID, AUTH_TOKEN, SEND_SMS_FROM, SEND_SMS_TO } = process.env;
 
-  const requestBody = JSON.parse(event.Body);
+  const requestBody = event.body;
 
   request.post({
     url: `https://api.twilio.com/2010-04-01/Accounts/${ACCOUNT_SID}/Messages.json`,

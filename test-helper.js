@@ -64,6 +64,9 @@ const setup = (context = {}, runtime = new MockRuntime()) => {
   if (context.ACCOUNT_SID && context.AUTH_TOKEN) {
     global.twilioClient = new Twilio(context.ACCOUNT_SID, context.AUTH_TOKEN);
   }
+  process.env.ACCOUNT_SID = '<ACCOUNT_SID>';
+  process.env.AUTH_TOKEN = 'AUTH_TOKEN';
+  process.env.SEND_SMS_FROM='<TWILIO_NUMBER>';
   global.Runtime = runtime;
 };
 
