@@ -3,8 +3,7 @@ const request = require('request-promise-native')
 exports.handler = function(context, event, callback) {
   const { ACCOUNT_SID, AUTH_TOKEN, SEND_SMS_FROM, SEND_SMS_TO } = process.env;
 
-  const twiml = new Twilio.twiml.MessagingResponse();
-  // twiml.message(`Source number: ${SEND_SMS_FROM}`);
+  const requestBody = JSON.parse(event.Body);
 
   request.post({
     url: `https://api.twilio.com/2010-04-01/Accounts/${ACCOUNT_SID}/Messages.json`,
@@ -15,18 +14,40 @@ exports.handler = function(context, event, callback) {
     },
     form: {
       From: SEND_SMS_FROM,
-      To: SEND_SMS_TO,
-      Body: `Remember about dinner`
+      To: requestBody.DestPhoneNumber,
+      Body: requestBody.Message
     }
   })
   .then((data) => {
     console.log(`Message successfully sent to ${SEND_SMS_TO}`);
-    callback(null, true);
+    callback(null, {
+      statusCode: 201,
+      body: JSON.stringify({
+        To: requestBody.DestPhoneNumber,
+        Message: requestBody.Message
+      }),
+      headers: {
+          'Access-Control-Allow-Origin': '*',
+      },
+    });
   })
   .catch((err) => {
-    console.log(err);
+    console.error(err);
+    errorResponse(err.message, context.awsRequestId, callback)
     return callback(err);
   });
-
-  callback(null, twiml);
 };
+
+
+function errorResponse(errorMessage, awsRequestId, callback) {
+  callback(null, {
+    statusCode: 500,
+    body: JSON.stringify({
+      Error: errorMessage,
+      Reference: awsRequestId,
+    }),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
+  });
+}
