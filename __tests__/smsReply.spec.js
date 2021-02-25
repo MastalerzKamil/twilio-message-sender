@@ -1,5 +1,5 @@
 const helpers = require('../test-helper');
-const sendMessage = require('../functions/sms/reply.protected').handler;
+const sendMessage = require('../functions/sms/reply').handler;
 const Twilio = require('twilio');
 
 const context = {
